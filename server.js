@@ -205,15 +205,23 @@ app.post('/api/login', async (req, res) => {
     req.session.username = user.username;
     req.session.country = user.country;
 
-    console.log('Login successful for:', username);
-
-    res.json({
-      success: true,
-      user: {
-        id: user.id,
-        username: user.username,
-        country: user.country
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ error: 'Session save failed' });
       }
+      
+      console.log('Login successful for:', username);
+      console.log('Session saved:', { userId: req.session.userId, username: req.session.username });
+
+      res.json({
+        success: true,
+        user: {
+          id: user.id,
+          username: user.username,
+          country: user.country
+        }
+      });
     });
   } catch (error) {
     console.error('Login error:', error);
