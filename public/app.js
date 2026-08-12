@@ -1,5 +1,7 @@
 // Socket.IO connection
-const socket = io();
+const socket = io({
+  withCredentials: true
+});
 
 // State
 let currentUser = null;
