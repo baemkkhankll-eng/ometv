@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmeTV - Random Video Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Login/Register Page -->
+  <div id="auth-page" class="page">
+    <div class="auth-background"></div>
+    <div class="auth-container">
+      <div class="logo-section">
+        <div class="logo">
+          Ome<br><span>TV</span>
+        </div>
+        <p>คุยกับคนทั่วโลกแบบสุ่ม</p>
+      </div>
+      
+      <div class="auth-form">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="login">เข้าสู่ระบบ</button>
+          <button class="tab-btn" data-tab="register">สมัครสมาชิก</button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="login-form" class="form-content active">
+          <div class="input-group">
+            <input type="text" id="login-username" placeholder="ชื่อผู้ใช้" required>
+            <span class="input-icon"><i class="fas fa-user"></i></span>
+          </div>
+          <div class="input-group">
+            <input type="password" id="login-password" placeholder="รหัสผ่าน" required>
+            <span class="input-icon"><i class="fas fa-lock"></i></span>
+          </div>
+          <button type="submit" class="btn-primary">เข้าสู่ระบบ</button>
+        </form>
+        
+        <!-- Register Form -->
+        <form id="register-form" class="form-content">
+          <div class="input-group">
+            <input type="text" id="register-username" placeholder="ชื่อผู้ใช้" required>
+            <span class="input-icon"><i class="fas fa-user"></i></span>
+          </div>
+          <div class="input-group">
+            <input type="password" id="register-password" placeholder="รหัสผ่าน" required>
+            <span class="input-icon"><i class="fas fa-lock"></i></span>
+          </div>
+          <div class="input-group">
+            <select id="register-country" required>
+              <option value="Worldwide">🌍 ทั่วโลก</option>
+              <option value="Thailand">🇹🇭 ไทย</option>
+              <option value="USA">🇺🇸 สหรัฐอเมริกา</option>
+              <option value="UK">🇬🇧 สหราชอาณาจักร</option>
+              <option value="Japan">🇯🇵 ญี่ปุ่น</option>
+              <option value="Korea">🇰🇷 เกาหลีใต้</option>
+              <option value="China">🇨🇳 จีน</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary">สมัครสมาชิก</button>
+        </form>
+        
+        <div id="auth-error" class="error-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Chat Page -->
+  <div id="chat-page" class="page hidden">
+    <div class="container">
+      <div class="video-section">
+        <div class="video-box left-box">
+          <div class="logo-wrapper" id="partner-screen">
+            <div class="logo">
+              Ome<br><span>TV</span>
+            </div>
+            <div class="online-status">
+              <span class="online-dot">●</span> <span id="online-count">0</span> ผู้ใช้งานออนไลน์
+            </div>
+            <div class="app-badges">
+              <div class="badge">Google Play</div>
+              <div class="badge">App Store</div>
+            </div>
+          </div>
+          
+          <div class="video-wrapper remote hidden" id="remote-video-wrapper">
+            <video id="remote-video" autoplay playsinline></video>
+            <div class="video-overlay">
+              <div class="user-badge">
+                <img id="partner-profile" class="badge-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M12 14c-6 0-8 4-8 4v2h16v-2s-2-4-8-4z'/%3E%3C/svg%3E" alt="Partner">
+                <span id="partner-label">คู่คุย</span>
+              </div>
+            </div>
+            <div class="media-status-indicator" id="remote-media-status">
+              <div class="media-status-icon" id="remote-camera-status">
+                <i class="fas fa-video"></i>
+              </div>
+              <div class="media-status-icon" id="remote-mic-status">
+                <i class="fas fa-microphone"></i>
+              </div>
+            </div>
+            <div class="video-status remote-status" id="remote-status">
+              <span class="status-dot"></span>
+              <span>ออนไลน์</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-box right-box">
+          <div class="video-placeholder" id="local-placeholder">
+            คุณได้รับอนุญาตให้เชื่อมต่อกับกล้องวิดีโอของคุณ...
+          </div>
+          
+          <div class="video-wrapper local hidden" id="local-video-wrapper">
+            <video id="local-video" autoplay muted playsinline></video>
+            <div class="video-overlay">
+              <div class="user-badge">
+                <img id="local-profile" class="badge-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M12 14c-6 0-8 4-8 4v2h16v-2s-2-4-8-4z'/%3E%3C/svg%3E" alt="You">
+                <span>คุณ</span>
+              </div>
+            </div>
+            <div class="media-status-indicator" id="local-media-status">
+              <div class="media-status-icon" id="local-camera-status">
+                <i class="fas fa-video"></i>
+              </div>
+              <div class="media-status-icon" id="local-mic-status">
+                <i class="fas fa-microphone"></i>
+              </div>
+            </div>
+            <div class="video-status local-status">
+              <span class="status-dot"></span>
+              <span>ออนไลน์</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-section">
+        <div class="control-left">
+          <button class="btn btn-start" id="find-match-btn">เริ่ม</button>
+          <button class="btn btn-stop hidden" id="skip-btn">หยุด</button>
+          <button class="btn btn-option" id="country-btn">
+            <span>ประเทศ</span>
+            <span class="flag-icon">🇹🇭</span>
+          </button>
+          <button class="btn btn-option" id="profile-btn">
+            <span>ฉัน</span>
+            <span class="flag-icon">👦</span>
+          </button>
+        </div>
+        
+        <div class="control-right">
+          <div class="notice-title">⚠️ กฎกติการะบบ</div>
+          <div class="notice">
+            โปรดให้ผู้ใช้งานเคารพผู้ใช้งานคนอื่น ห้ามแสดงพฤติกรรมที่ไม่เหมาะสม มิฉะนั้นบัญชีอาจถูกระงับการใช้งานได้
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="country-selector-modal hidden" id="country-modal">
+      <div class="country-selector-content">
+        <h3>เลือกประเทศ</h3>
+        <div class="country-list">
+          <button class="country-option" data-country="Worldwide">🌍 ทั่วโลก</button>
+          <button class="country-option" data-country="Thailand">🇹🇭 ไทย</button>
+          <button class="country-option" data-country="USA">🇺🇸 สหรัฐอเมริกา</button>
+          <button class="country-option" data-country="UK">🇬🇧 สหราชอาณาจักร</button>
+          <button class="country-option" data-country="Japan">🇯🇵 ญี่ปุ่น</button>
+          <button class="country-option" data-country="Korea">🇰🇷 เกาหลีใต้</button>
+          <button class="country-option" data-country="China">🇨🇳 จีน</button>
+        </div>
+        <button class="close-modal" id="close-country-modal">ปิด</button>
+      </div>
+    </div>
+
+    <div class="profile-modal hidden" id="profile-modal">
+      <div class="profile-modal-content">
+        <h3>โปรไฟล์ของคุณ</h3>
+        <div class="profile-info">
+          <img id="modal-profile" class="modal-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M12 14c-6 0-8 4-8 4v2h16v-2s-2-4-8-4z'/%3E%3C/svg%3E" alt="Profile">
+          <p id="modal-username">Username</p>
+          <p id="modal-country">🌍 ทั่วโลก</p>
+        </div>
+        <div class="profile-actions">
+          <button class="btn-small logout-btn" id="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+          </button>
+        </div>
+        <button class="close-modal" id="close-profile-modal">ปิด</button>
+      </div>
+    </div>
+
+    <div class="waiting-overlay hidden" id="waiting-overlay">
+      <div class="spinner"></div>
+      <p>กำลังค้นหาคู่คุย...</p>
+    </div>
+
+    <div class="status-message hidden" id="status-message"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
